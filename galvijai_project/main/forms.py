@@ -13,3 +13,9 @@ class AnimalForm(forms.ModelForm):
             'svoris': 'Svoris',
         }
 
+    def clean_number(self):
+        data = self.cleaned_data['numeris'].strip()
+        data = data.upper()
+        if not data.startswith('LT'):
+            data = 'LT' + data
+        return data
