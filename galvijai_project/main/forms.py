@@ -1,5 +1,5 @@
 from django import forms
-from .models import Animal, Event
+from .models import Animal, GENDER_CHOICES, COLOR_CHOICES, EVENT_TYPE_CHOICES
 
 class AnimalForm(forms.ModelForm):
     class Meta:
@@ -24,12 +24,31 @@ class AnimalForm(forms.ModelForm):
             data = 'LT' + data
         return data
 
-class EventForm(forms.ModelForm):
-    class Meta:
-        model = Event
-        fields = ['event_type', 'date', 'notes']
-        labels = {
-            'event_type': 'Event type',
-            'date': 'Event date',
-            'notes': 'Notes',
-        }
+
+class SpecialEventForm(forms.Form):
+    event_type = forms.ChoiceField(choices=EVENT_TYPE_CHOICES)
+    date = forms.DateField(required=False)
+    notes = forms.CharField(widget=forms.Textarea, required=False)
+
+    # Laukai naujam gyvuliui
+    child_name = forms.CharField(required=False)
+    child_number = forms.CharField(required=False,max_length=14)
+    child_gender = forms.ChoiceField(
+        choices=GENDER_CHOICES,
+        required=False
+    )
+    child_color = forms.ChoiceField(
+        choices=COLOR_CHOICES,
+        required=False
+    )
+
+    def clean(self):
+        cleaned_data = super().clean()
+        event_type = cleaned_data.get('event_type')
+        child_number = cleaned_data.get('child_number')
+
+        if event_type == 'prieauglio_atsivedimas':
+            # Tikriname, ar vartotojas užpildė privalomus duomenis
+            if not child_number:
+                self.add_error('child_number', 'Privaloma nurodyti naujo gyvulio numerį.')
+        return cleaned_data

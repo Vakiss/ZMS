@@ -12,4 +12,9 @@ urlpatterns = [
     path('animals/<int:pk>/', views.animal_detail, name='animal_detail'),
     path('new_animal/', views.new_animal, name='new_animal'),
     path('animals/<int:animal_id>/add_event/', views.add_event, name='add_event'),
+    path('passport/', views.passport, name='passport'),
+    path('order_passport/<int:animal_id>/', views.order_passport, name='order_passport'),
+    path('ordered_passports/', views.ordered_passports, name='ordered_passports'),
+    path('isagai/', views.isagai, name='isagai'),
+    path('ataskaitos/', views.ataskaitos, name='ataskaitos'),
 ]

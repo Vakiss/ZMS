@@ -3,7 +3,64 @@
 <h2>Naujas įvykis gyvuliui {{ animal.number }}</h2>
 <form method="post">
   {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit" class="btn btn-primary">Patvirtinti</button>
+
+  {{ form.non_field_errors }}
+
+  <div>
+    <label for="id_event_type">Event type:</label>
+    {{ form.event_type }}
+  </div>
+  <div>
+    <label for="id_date">Event date:</label>
+    {{ form.date }}
+  </div>
+  <div>
+    <label for="id_notes">Notes:</label>
+    {{ form.notes }}
+  </div>
+
+  <!-- Čia prasideda palikuonio laukai -->
+  <div id="child_fields" style="display: none;">
+    <h3>Prieauglio duomenys</h3>
+    <div>
+      <label for="id_child_name">Child name:</label>
+      {{ form.child_name }}
+    </div>
+    <div>
+      <label for="id_child_number">Child number:</label>
+      {{ form.child_number }}
+    </div>
+    <div>
+      <label for="id_child_gender">Child gender:</label>
+      {{ form.child_gender }}
+    </div>
+    <div>
+      <label for="id_child_color">Child color:</label>
+      {{ form.child_color }}
+    </div>
+
+  </div>
+
+  <button type="submit">Patvirtinti</button>
 </form>
+
+<script>
+  // Kai keičiasi event_type reikšmė, rodome/paslėpiame child_fields
+  const eventTypeSelect = document.getElementById("id_event_type");
+  const childFieldsDiv = document.getElementById("child_fields");
+
+  function toggleChildFields() {
+    if (eventTypeSelect.value === "prieauglio_atsivedimas") {
+      childFieldsDiv.style.display = "block";
+    } else {
+      childFieldsDiv.style.display = "none";
+    }
+  }
+
+  // Inicijuojame būseną
+  toggleChildFields();
+
+  // Kai pasikeičia pasirinkimas
+  eventTypeSelect.addEventListener("change", toggleChildFields);
+</script>
 {% endblock %}

@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.conf import settings
 
 
 
@@ -9,12 +10,6 @@ class Breed(models.Model):
     def __str__(self):
         return self.name
 
-class Farm(models.Model):
-    name = models.CharField(max_length=200)
-    location = models.CharField(max_length=200, blank=True, null=True)
-
-    def __str__(self):
-        return self.name
 
 
 COLOR_CHOICES = [
@@ -30,7 +25,10 @@ COLOR_CHOICES = [
     ('golden', '10 - Golden'),
     ('red', '11 - Red'),
 ]
-
+GENDER_CHOICES = [
+    ('male', 'Male'),
+    ('female', 'Female'),
+]
 class Animal(models.Model):
     number = models.CharField(max_length=14,null=True, blank=True,unique=True)
     gender = models.CharField(max_length=10,null=True, blank=True, choices=[('male', 'Male'), ('female', 'Female')])
@@ -38,9 +36,27 @@ class Animal(models.Model):
     name = models.CharField(max_length=50, blank=True, null=True)
     weight = models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True)
     birth_date = models.DateField(blank=True, null=True)
-
+    mother = models.ForeignKey(
+        'self',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='offspring'
+    )
     def __str__(self):
         return f"{self.name} ({self.gender})"
+
+    has_passport = models.BooleanField(default=False)
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='animals',
+        null=True, blank=True
+    )
+
+    @property
+    def alert(self):
+        return self.events.filter(event_type__in=['isvezimas','gaisimas']).exists()
 
 EVENT_TYPE_CHOICES = [
     ('prieauglio_atsivedimas', 'Prieauglio atsivedimas'),

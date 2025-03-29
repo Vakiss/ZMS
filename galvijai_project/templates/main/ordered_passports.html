@@ -1,0 +1,28 @@
+{% extends 'main/base.html' %}
+{% block content %}
+<h2>Užsakyti pasai</h2>
+{% if animals %}
+  <table border="1" cellspacing="0" cellpadding="5">
+    <thead>
+      <tr>
+        <th>Number</th>
+        <th>Name</th>
+        <th>Gender</th>
+        <th>Color</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for animal in animals %}
+        <tr>
+          <td>{{ animal.number }}</td>
+          <td>{{ animal.name }}</td>
+          <td>{{ animal.get_gender_display }}</td>
+          <td>{{ animal.get_color_display }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% else %}
+  <p>Nėra gyvulių, kuriems užsakyti pasai.</p>
+{% endif %}
+{% endblock %}
