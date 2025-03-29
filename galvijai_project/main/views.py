@@ -82,7 +82,9 @@ def new_animal(request):
     if request.method == 'POST':
         form = AnimalForm(request.POST)
         if form.is_valid():
-            form.save()
+            animal = form.save(commit=False)
+            animal.owner = request.user
+            animal.save()
             return redirect('animal_list')
     else:
         form = AnimalForm()
