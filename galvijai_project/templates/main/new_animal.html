@@ -1,11 +1,29 @@
 {% extends 'main/base.html' %}
 {% load static %}
-
 {% block content %}
-<h2>Add new animal</h2>
+<h2>Pridėti naują gyvulį</h2>
 <form method="post">
   {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit" style="background-color: green; color: white;">Confirm</button>
+  <table>
+    <thead>
+      <tr>
+        <th>Numeris</th>
+        <th>Lytis</th>
+        <th>Spalva</th>
+        <th>Vadas</th>
+        <th>Svoris</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{ form.number }}</td>
+        <td>{{ form.gender }}</td>
+        <td>{{ form.color }}</td>
+        <td>{{ form.name }}</td>
+        <td>{{ form.weight }}</td>
+      </tr>
+    </tbody>
+  </table>
+  <button type="button" class="btn btn-success">Confirm</button>
 </form>
 {% endblock %}
