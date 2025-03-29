@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 
 
@@ -40,3 +41,18 @@ class Animal(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.gender})"
+
+EVENT_TYPE_CHOICES = [
+    ('prieauglio_atsivedimas', 'Prieauglio atsivedimas'),
+    ('gaisimas', 'Gaišimas'),
+    ('isvezimas', 'Išvežimas'),
+]
+
+class Event(models.Model):
+    animal = models.ForeignKey(Animal, on_delete=models.CASCADE, related_name='events')
+    event_type = models.CharField(max_length=50, choices=EVENT_TYPE_CHOICES)
+    date = models.DateField(default=timezone.now)
+    notes = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.get_event_type_display()} ({self.animal.number})"
