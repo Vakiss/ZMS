@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Galvijų informacinė sistema</title>
+  <!-- Jei norite, pridėkite Bootstrap ar kitus CSS failus -->
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+  <!-- Viršutinė juosta -->
+  <header class="top-bar">
+    <div class="logo">
+      <h1>ŽIDIC informacinė sistema</h1>
+    </div>
+    <div class="user-info">
+      <!-- Pvz., vėliau čia galima rodyti prisijungusio vartotojo vardą -->
+      <span>Martye Šamanavičė</span>
+    </div>
+  </header>
+
+  <div class="container">
+    <!-- Šoninis meniu -->
+    <nav class="sidebar">
+      <ul>
+        <li><a href="{% url 'index' %}">Pradinis</a></li>
+        <li><a href="{% url 'animal_list' %}">Gyvulių sąrašas</a></li>
+        <li><a href="#">Kiti meniu punktai</a></li>
+        <!-- ... -->
+      </ul>
+    </nav>
+
+    <!-- Pagrindinis turinys -->
+    <main class="content">
+      {% block content %}
+      {% endblock %}
+    </main>
+  </div>
+
+</body>
+</html>
