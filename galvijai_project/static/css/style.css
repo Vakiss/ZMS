@@ -1,0 +1,51 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.top-bar {
+  background-color: #4CAF50; /* Žalia spalva, pvz. */
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}
+
+.top-bar .logo h1 {
+  margin: 0;
+}
+
+.top-bar .user-info {
+  margin-right: 20px;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+}
+
+.sidebar {
+  width: 200px;
+  background-color: #f2f2f2;
+  padding: 10px;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.sidebar li {
+  margin: 10px 0;
+}
+
+.sidebar a {
+  text-decoration: none;
+  color: #333;
+}
+
+.content {
+  flex: 1;
+  padding: 20px;
+}
