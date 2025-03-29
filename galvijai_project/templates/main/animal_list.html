@@ -1,0 +1,14 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+<h2>Gyvulių sąrašas</h2>
+<ul>
+  {% for animal in animals %}
+  <li>
+    <a href="{% url 'animal_detail' animal.pk %}">
+      {{ animal.name }} ({{ animal.breed }})
+    </a>
+  </li>
+  {% endfor %}
+</ul>
+{% endblock %}
