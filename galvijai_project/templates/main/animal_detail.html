@@ -6,4 +6,22 @@
 <p><strong>Number:</strong> {{ animal.number }}</p>
 <p><strong>Gender:</strong> {{ animal.gender }}</p>
 <p><strong>Color:</strong> {{ animal.color }}</p>
+
+<a href="{% url 'add_event' animal.id %}" class="btn btn-success">Naujas įvykis</a>
+
+<h3>Gyvulio įvykiai</h3>
+{% if events %}
+  <ul>
+    {% for event in events %}
+      <li>
+        <strong>{{ event.get_event_type_display }}</strong>
+        ({{ event.date }}):
+        {{ event.notes }}
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>Įvykių nėra.</p>
+{% endif %}
+
 {% endblock %}

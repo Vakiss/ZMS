@@ -1,0 +1,9 @@
+{% extends 'main/base.html' %}
+{% block content %}
+<h2>Naujas įvykis gyvuliui {{ animal.number }}</h2>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit" class="btn btn-primary">Patvirtinti</button>
+</form>
+{% endblock %}
