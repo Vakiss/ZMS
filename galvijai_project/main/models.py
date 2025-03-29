@@ -56,3 +56,4 @@ class Event(models.Model):
 
     def __str__(self):
         return f"{self.get_event_type_display()} ({self.animal.number})"
+

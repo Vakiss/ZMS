@@ -1,5 +1,5 @@
 from django import forms
-from .models import Animal
+from .models import Animal, Event
 
 class AnimalForm(forms.ModelForm):
     class Meta:
@@ -23,3 +23,13 @@ class AnimalForm(forms.ModelForm):
         if not data.startswith('LT'):
             data = 'LT' + data
         return data
+
+class EventForm(forms.ModelForm):
+    class Meta:
+        model = Event
+        fields = ['event_type', 'date', 'notes']
+        labels = {
+            'event_type': 'Event type',
+            'date': 'Event date',
+            'notes': 'Notes',
+        }

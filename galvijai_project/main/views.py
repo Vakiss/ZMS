@@ -3,7 +3,7 @@ from .models import Animal
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
-from .forms import AnimalForm
+from .forms import AnimalForm,EventForm
 
 
 def index(request):
@@ -14,10 +14,32 @@ def animal_list(request):
     animals = Animal.objects.all()
     return render(request, 'main/animal_list.html', {'animals': animals})
 
+
+
+
+
 @login_required
 def animal_detail(request, pk):
     animal = get_object_or_404(Animal, pk=pk)
-    return render(request, 'main/animal_detail.html', {'animal': animal})
+    events = animal.events.all().order_by('-date')
+    return render(request, 'main/animal_detail.html', {'animal': animal, 'events': events})
+
+@login_required
+def add_event(request, animal_id):
+    animal = get_object_or_404(Animal, pk=animal_id)
+    if request.method == 'POST':
+        form = EventForm(request.POST)
+        if form.is_valid():
+            new_event = form.save(commit=False)
+            new_event.animal = animal
+            new_event.save()
+            return redirect('animal_detail', pk=animal.pk)
+    else:
+        form = EventForm()
+    return render(request, 'main/add_event.html', {'form': form, 'animal': animal})
+
+
+
 
 def register(request):
     if request.method == 'POST':
