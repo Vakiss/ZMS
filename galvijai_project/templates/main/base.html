@@ -15,8 +15,16 @@
       <h1>ZMS informacinė sistema</h1>
     </div>
     <div class="user-info">
-      <!-- Pvz., vėliau čia galima rodyti prisijungusio vartotojo vardą -->
-      <span> Vakaris</span>
+      {% if user.is_authenticated %}
+        <span>Sveiki, {{ user.username }}!</span>
+        <form method="post" action="{% url 'logout' %}" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit">Atsijungti</button>
+        </form>
+      {% else %}
+        <a href="{% url 'login' %}">Prisijungti</a> |
+        <a href="{% url 'register' %}">Registruotis</a>
+      {% endif %}
     </div>
   </header>
 
