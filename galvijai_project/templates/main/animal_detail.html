@@ -1,0 +1,9 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+<h2>Informacija apie gyvulį</h2>
+<p><strong>Vardas:</strong> {{ animal.name }}</p>
+<p><strong>Veislė:</strong> {{ animal.breed }}</p>
+<p><strong>Gimimo data:</strong> {{ animal.birth_date }}</p>
+<p><strong>Ūkis:</strong> {{ animal.farm }}</p>
+{% endblock %}
