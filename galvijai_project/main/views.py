@@ -13,7 +13,7 @@ def index(request):
 
 @login_required
 def animal_list(request):
-    animals = Animal.objects.all()
+    animals = Animal.objects.filter(owner=request.user)
     return render(request, 'main/animal_list.html', {'animals': animals})
 
 
@@ -22,7 +22,7 @@ def animal_list(request):
 
 @login_required
 def animal_detail(request, pk):
-    animal = get_object_or_404(Animal, pk=pk)
+    animal = get_object_or_404(Animal, pk=pk, owner=request.user)
     events = animal.events.all().order_by('-date')
     return render(request, 'main/animal_detail.html', {'animal': animal, 'events': events})
 
