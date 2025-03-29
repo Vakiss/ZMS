@@ -60,8 +60,8 @@ class Animal(models.Model):
 
 EVENT_TYPE_CHOICES = [
     ('prieauglio_atsivedimas', 'Prieauglio atsivedimas'),
-    ('gaisimas', 'Gaišimas'),
-    ('isvezimas', 'Išvežimas'),
+    ('Gaišimas', 'Gaišimas'),
+    ('Išvežimas', 'Išvežimas'),
 ]
 
 class Event(models.Model):

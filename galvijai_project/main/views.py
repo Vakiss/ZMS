@@ -96,14 +96,14 @@ def new_animal(request):
 
 def passport(request):
     eligible_animals = Animal.objects.filter(has_passport=False) \
-        .exclude(events__event_type__in=['isvezimas', 'zuve']).distinct()
+        .exclude(events__event_type__in=['Gaišimas', 'Išvežimas']).distinct()
     return render(request, 'main/pasai.html', {'animals': eligible_animals})
 
 @require_POST
 def order_passport(request, animal_id):
     animal = get_object_or_404(Animal, pk=animal_id)
     # Patikriname, ar gyvulis yra eligible
-    if not animal.has_passport and not animal.events.filter(event_type__in=['isvezimas', 'zuve']).exists():
+    if not animal.has_passport and not animal.events.filter(event_type__in=['Gaišimas', 'Išvežimas']).exists():
         animal.has_passport = True
         animal.save()
     return redirect('passport')
