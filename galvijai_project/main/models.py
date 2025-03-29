@@ -16,7 +16,7 @@ class Farm(models.Model):
         return self.name
 
 class Animal(models.Model):
-    number = models.CharField(max_length=12,null=True, blank=True,unique=True)
+    number = models.CharField(max_length=14,null=True, blank=True,unique=True)
     gender = models.CharField(max_length=10,null=True, blank=True, choices=[('male', 'Male'), ('female', 'Female')])
     color = models.CharField(max_length=50, blank=True, null=True)
     name = models.CharField(max_length=50, blank=True, null=True)
