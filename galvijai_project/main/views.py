@@ -3,6 +3,7 @@ from .models import Animal
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
+from .forms import AnimalForm
 
 
 def index(request):
@@ -29,3 +30,13 @@ def register(request):
         form = UserCreationForm()
     return render(request, 'registration/register.html', {'form': form})
 
+@login_required
+def new_animal(request):
+    if request.method == 'POST':
+        form = AnimalForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('animal_list')
+    else:
+        form = AnimalForm()
+    return render(request, 'main/new_animal.html', {'form': form})
