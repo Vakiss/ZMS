@@ -1,0 +1,40 @@
+{% extends 'main/base.html' %}
+{% block content %}
+<div class="content-container">
+  <h2>Gyvulių paieška</h2>
+
+  <!-- Paieškos forma -->
+  <form method="get" action="{% url 'animal_search' %}">
+    <input type="text" name="q" placeholder="Įveskite gyvulio numerį ar vardą" value="{{ query }}">
+    <button type="submit">Ieškoti</button>
+  </form>
+
+  <hr>
+
+  <!-- Rezultatų lentelė -->
+  {% if animals.exists %}
+    <table border="1" cellspacing="0" cellpadding="5">
+      <thead>
+        <tr>
+          <th>Number</th>
+          <th>Name</th>
+          <th>Gender</th>
+          <th>Color</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for animal in animals %}
+        <tr>
+          <td>{{ animal.number }}</td>
+          <td>{{ animal.name }}</td>
+          <td>{{ animal.get_gender_display }}</td>
+          <td>{{ animal.get_color_display }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>Nerasta gyvulių pagal pateiktą paieškos terminą.</p>
+  {% endif %}
+</div>
+{% endblock %}

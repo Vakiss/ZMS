@@ -20,4 +20,5 @@ urlpatterns = [
     path('order_isagai/<int:animal_id>/', views.order_isagai, name='order_isagai'),
     path('ordered_isagai/', views.ordered_isagai, name='ordered_isagai'),
     path('ataskaitos/', views.ataskaitos, name='ataskaitos'),
+    path('animal_search/', views.animal_search, name='animal_search'),
 ]

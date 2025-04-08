@@ -47,7 +47,7 @@ def add_event(request, animal_id):
                 notes=notes
             )
 
-            # 2) Jeigu tai prieauglio atsivedimas, sukuriame naują gyvulį
+            # 2) Jeigu tai prieauglio atsivedimas, sukuriame naują gyvulį (palikuonį)
             if event_type == 'Prieauglio atsivedimas':
                 child_name = form.cleaned_data['child_name']
                 child_number = form.cleaned_data['child_number']
@@ -57,8 +57,9 @@ def add_event(request, animal_id):
                     name=child_name,
                     number=child_number,
                     mother=mother,
-                    color= child_color,
-                    gender = child_gender
+                    color=child_color,
+                    gender=child_gender,
+                    owner=mother.owner
                 )
 
             return redirect('animal_detail', pk=mother.pk)
@@ -135,23 +136,28 @@ def ordered_isagai(request):
     return render(request, 'main/ordered_isagai.html', {'animals': ordered_animals})
 
 
-@login_required
 def ataskaitos(request):
     user = request.user
-    # 1) Gyvuliai pagal lytį – rodo tik number ir gender
-    animals_by_gender = Animal.objects.filter(owner=user).only('number', 'gender').order_by('gender')
+    # 1) Gyvuliai pagal lytį – rodo tik number ir gender, bet išskyrus, jei turi įvykį "Gaišimas" arba "Išvežimas"
+    animals_by_gender = Animal.objects.filter(owner=user) \
+        .exclude(events__event_type__in=['Gaišimas', 'Išvežimas']) \
+        .only('number', 'gender') \
+        .order_by('gender')
 
-    # 2) Gyvuliai pagal spalvą – rodo tik number ir color
-    animals_by_color = Animal.objects.filter(owner=user).only('number', 'color').order_by('color')
+    # 2) Gyvuliai pagal spalvą – rodo tik number ir color, išskyrus tuos, kurie turi įvykį "Gaišimas" arba "Išvežimas"
+    animals_by_color = Animal.objects.filter(owner=user) \
+        .exclude(events__event_type__in=['Gaišimas', 'Išvežimas']) \
+        .only('number', 'color') \
+        .order_by('color')
 
-    # 3) Prieauglio atsivedimų skaičius kiekvienam gyvuliui
-    #    Pavyzdžiui, norime sužinoti, kiek "Prieauglio atsivedimo" eventų turi kiekvienas gyvulys
+    # 3) Prieauglio atsivedimų skaičius – skaičiuojame tik tiems gyvuliams,
+    # kurie neturi įvykio "Gaišimas" arba "Išvežimas"
     animals_with_birth_count = (Animal.objects
         .filter(owner=user)
+        .exclude(events__event_type__in=['Gaišimas', 'Išvežimas'])
         .annotate(birth_count=Count('events', filter=Q(events__event_type='Prieauglio atsivedimas')))
         .order_by('-birth_count')
     )
-    # Kiekvienas Animal objektas dabar turės papildomą lauką 'birth_count'
 
     context = {
         'animals_by_gender': animals_by_gender,
@@ -159,3 +165,19 @@ def ataskaitos(request):
         'animals_with_birth_count': animals_with_birth_count,
     }
     return render(request, 'main/ataskaitos.html', context)
+
+@login_required
+def animal_search(request):
+    query = request.GET.get('q', '').strip()  # Gauti paieškos terminą, pašalinti nereikalingus tarpelius
+    animals = Animal.objects.filter(owner=request.user)  # tik prisijungusio vartotojo gyvuliai
+    if query:
+        animals = animals.filter(
+            Q(number__icontains=query) |
+            Q(name__icontains=query)
+            # Pridėkite papildomų laukų, pvz., Q(gender__icontains=query), jei reikia
+        )
+    context = {
+        'animals': animals,
+        'query': query,
+    }
+    return render(request, 'main/animal_search.html', context)

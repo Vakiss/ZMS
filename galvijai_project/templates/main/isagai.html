@@ -22,13 +22,13 @@
         <td>
           <form method="post" action="{% url 'order_isagai' animal.pk %}">
             {% csrf_token %}
-            <button type="submit">Order Isagai</button>
+            <button type="submit">Užsisakyti isagus</button>
           </form>
         </td>
       </tr>
     {% empty %}
       <tr>
-        <td colspan="5">No eligible animals found.</td>
+        <td colspan="5">Nerasta gyvūnų.</td>
       </tr>
     {% endfor %}
   </tbody>
