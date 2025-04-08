@@ -18,5 +18,6 @@ urlpatterns = [
     path('isagai/', views.isagai, name='isagai'),
     path('isagai/', views.isagai, name='isagai'),
     path('order_isagai/<int:animal_id>/', views.order_isagai, name='order_isagai'),
+    path('ordered_isagai/', views.ordered_isagai, name='ordered_isagai'),
     path('ataskaitos/', views.ataskaitos, name='ataskaitos'),
 ]
