@@ -43,6 +43,8 @@ class Animal(models.Model):
         blank=True,
         related_name='offspring'
     )
+    has_isagai = models.BooleanField(default=False)
+
     def __str__(self):
         return f"{self.name} ({self.gender})"
 
@@ -56,10 +58,10 @@ class Animal(models.Model):
 
     @property
     def alert(self):
-        return self.events.filter(event_type__in=['isvezimas','gaisimas']).exists()
+        return self.events.filter(event_type__in=['Gaišimas', 'Išvežimas']).exists()
 
 EVENT_TYPE_CHOICES = [
-    ('prieauglio_atsivedimas', 'Prieauglio atsivedimas'),
+    ('Prieauglio atsivedimas', 'Prieauglio atsivedimas'),
     ('Gaišimas', 'Gaišimas'),
     ('Išvežimas', 'Išvežimas'),
 ]

@@ -3,12 +3,19 @@
 <h2>Naujas įvykis gyvuliui {{ animal.number }}</h2>
 <form method="post">
   {% csrf_token %}
+   {% if form.non_field_errors %}
+  <div class="error">
+    {{ form.non_field_errors }}
+  </div>
+{% endif %}
 
-  {{ form.non_field_errors }}
 
   <div>
     <label for="id_event_type">Event type:</label>
     {{ form.event_type }}
+     {% if form.event_type.errors %}
+    <div class="error">{{ form.event_type.errors }}</div>
+    {% endif %}
   </div>
   <div>
     <label for="id_date">Event date:</label>

@@ -33,6 +33,9 @@ def add_event(request, animal_id):
         form = SpecialEventForm(request.POST)
         if form.is_valid():
             event_type = form.cleaned_data['event_type']
+            if event_type == 'Prieauglio atsivedimas' and mother.gender.lower() != 'female':
+                form.add_error('event_type', 'Tik patelės gali turėti prieauglio atsivedimo įvykį.')
+                return render(request, 'main/add_event.html', {'form': form, 'animal': mother})
             date = form.cleaned_data['date'] or timezone.now().date()
             notes = form.cleaned_data['notes']
 
@@ -45,7 +48,7 @@ def add_event(request, animal_id):
             )
 
             # 2) Jeigu tai prieauglio atsivedimas, sukuriame naują gyvulį
-            if event_type == 'prieauglio_atsivedimas':
+            if event_type == 'Prieauglio atsivedimas':
                 child_name = form.cleaned_data['child_name']
                 child_number = form.cleaned_data['child_number']
                 child_color = form.cleaned_data['child_color']
