@@ -1,19 +1,13 @@
 {% extends 'main/base.html' %}
 {% block content %}
-<div class="content-container">
-  <h2>Gyvulių paieška</h2>
+<div class="mx-auto p-2" style="width: 400px;">
 
-  <!-- Paieškos forma -->
-  <form method="get" action="{% url 'animal_search' %}">
-    <input type="text" name="q" placeholder="Įveskite gyvulio numerį ar vardą" value="{{ query }}">
-    <button type="submit">Ieškoti</button>
-  </form>
+  <h2>Gyvulių paieškos rezultatai</h2>
 
-  <hr>
+  <p>Paieškos terminas: <strong>{{ query }}</strong></p>
 
-  <!-- Rezultatų lentelė -->
-  {% if animals.exists %}
-    <table border="1" cellspacing="0" cellpadding="5">
+  {% if animals %}
+    <table class="table table-bordered">
       <thead>
         <tr>
           <th>Number</th>
@@ -23,18 +17,18 @@
         </tr>
       </thead>
       <tbody>
-        {% for animal in animals %}
+      {% for animal in animals %}
         <tr>
           <td>{{ animal.number }}</td>
           <td>{{ animal.name }}</td>
           <td>{{ animal.get_gender_display }}</td>
           <td>{{ animal.get_color_display }}</td>
         </tr>
-        {% endfor %}
+      {% endfor %}
       </tbody>
     </table>
   {% else %}
-    <p>Nerasta gyvulių pagal pateiktą paieškos terminą.</p>
+    <p>Nerasta gyvulių pagal paieškos kriterijų.</p>
   {% endif %}
 </div>
 {% endblock %}

@@ -21,4 +21,7 @@ urlpatterns = [
     path('ordered_isagai/', views.ordered_isagai, name='ordered_isagai'),
     path('ataskaitos/', views.ataskaitos, name='ataskaitos'),
     path('animal_search/', views.animal_search, name='animal_search'),
+    path('export/pdf/gender/', views.export_by_gender_pdf, name='export_by_gender_pdf'),
+    path('export/pdf/color/', views.export_by_color_pdf, name='export_by_color_pdf'),
+    path('export/pdf/birth/', views.export_birth_count_pdf, name='export_birth_count_pdf'),
 ]

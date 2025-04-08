@@ -11,11 +11,18 @@
 </head>
 <body>
 
+
   <!-- Viršutinė juosta -->
   <header class="top-bar">
     <div class="logo">
       <h1 style="margin:0;">ŽMS informacinė sistema</h1>
     </div>
+    <form class="d-flex me-3" method="get" action="{% url 'animal_search' %}">
+        <input class="form-control me-2" type="search" name="q"
+               placeholder="Ieškoti..." aria-label="Search">
+        <button class="btn btn-outline-light" type="submit">Ieškoti</button>
+      </form>
+
     <div class="user-info">
       {% if user.is_authenticated %}
         <span>Sveiki, {{ user.username }}!</span>

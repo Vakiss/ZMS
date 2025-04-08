@@ -7,6 +7,10 @@ from .forms import AnimalForm,SpecialEventForm
 from django.utils import timezone
 from django.views.decorators.http import require_POST
 from django.db.models import Count, Q
+from reportlab.pdfgen import canvas
+from io import BytesIO
+from django.http import HttpResponse
+from reportlab.lib.pagesizes import letter, landscape
 
 def index(request):
     return render(request, 'main/index.html')
@@ -168,16 +172,133 @@ def ataskaitos(request):
 
 @login_required
 def animal_search(request):
-    query = request.GET.get('q', '').strip()  # Gauti paieškos terminą, pašalinti nereikalingus tarpelius
-    animals = Animal.objects.filter(owner=request.user)  # tik prisijungusio vartotojo gyvuliai
+    query = request.GET.get('q', '').strip()
+    animals = Animal.objects.filter(owner=request.user)
     if query:
         animals = animals.filter(
             Q(number__icontains=query) |
             Q(name__icontains=query)
-            # Pridėkite papildomų laukų, pvz., Q(gender__icontains=query), jei reikia
         )
-    context = {
-        'animals': animals,
-        'query': query,
-    }
-    return render(request, 'main/animal_search.html', context)
+    return render(request, 'main/animal_search.html', {'animals': animals, 'query': query})
+
+
+@login_required
+def export_by_gender_pdf(request):
+    user = request.user
+    animals = Animal.objects.filter(owner=user).order_by('gender')
+
+    buffer = BytesIO()
+    # Naudosime landscape (horizontalų) puslapį
+    p = canvas.Canvas(buffer, pagesize=landscape(letter))
+    width, height = landscape(letter)
+
+    # Parašome antraštę
+    p.setFont("Helvetica-Bold", 16)
+    p.drawCentredString(width / 2, height - 50, "Gyvuliu ataskaita pagal lyti")
+
+    # Lentelės antraštės
+    p.setFont("Helvetica-Bold", 12)
+    y = height - 80
+    p.drawString(50, y, "Numeris")
+    p.drawString(150, y, "Vardas")
+    p.drawString(300, y, "Lytis")
+    y -= 20
+    p.setFont("Helvetica", 10)
+
+    for animal in animals:
+        if y < 50:
+            p.showPage()
+            y = height - 50
+        p.drawString(50, y, str(animal.number))
+        p.drawString(150, y, animal.name or "")
+        p.drawString(300, y, animal.get_gender_display())
+        y -= 20
+
+    p.save()
+    pdf = buffer.getvalue()
+    buffer.close()
+
+    response = HttpResponse(content_type="application/pdf")
+    response['Content-Disposition'] = 'attachment; filename="animals_by_gender.pdf"'
+    response.write(pdf)
+    return response
+
+
+@login_required
+def export_by_color_pdf(request):
+    user = request.user
+    animals = Animal.objects.filter(owner=user).order_by('color')
+
+    buffer = BytesIO()
+    p = canvas.Canvas(buffer, pagesize=landscape(letter))
+    width, height = landscape(letter)
+
+    p.setFont("Helvetica-Bold", 16)
+    p.drawCentredString(width / 2, height - 50, "Gyvuliu ataskaita pagal spalva")
+
+    p.setFont("Helvetica-Bold", 12)
+    y = height - 80
+    p.drawString(50, y, "Numeris")
+    p.drawString(150, y, "Vardas")
+    p.drawString(300, y, "Spalva")
+    y -= 20
+    p.setFont("Helvetica", 10)
+
+    for animal in animals:
+        if y < 50:
+            p.showPage()
+            y = height - 50
+        p.drawString(50, y, str(animal.number))
+        p.drawString(150, y, animal.name or "")
+        p.drawString(300, y, animal.get_color_display())
+        y -= 20
+
+    p.save()
+    pdf = buffer.getvalue()
+    buffer.close()
+
+    response = HttpResponse(content_type="application/pdf")
+    response['Content-Disposition'] = 'attachment; filename="animals_by_color.pdf"'
+    response.write(pdf)
+    return response
+
+
+@login_required
+def export_birth_count_pdf(request):
+    user = request.user
+    animals = (Animal.objects.filter(owner=user)
+               .annotate(birth_count=Count('events', filter=Q(events__event_type='Prieauglio atsivedimas')))
+               .order_by('-birth_count'))
+
+    buffer = BytesIO()
+    p = canvas.Canvas(buffer, pagesize=landscape(letter))
+    width, height = landscape(letter)
+
+    p.setFont("Helvetica-Bold", 16)
+    p.drawCentredString(width / 2, height - 50, "Gyvuliu ataskaita pagal prieauglio atsivedimu skaiciu")
+
+    p.setFont("Helvetica-Bold", 12)
+    y = height - 80
+    p.drawString(50, y, "Numeris")
+    p.drawString(150, y, "Vardas")
+    p.drawString(300, y, "Palikuoniu skaicius")
+    y -= 20
+    p.setFont("Helvetica", 10)
+
+    for animal in animals:
+        if y < 50:
+            p.showPage()
+            y = height - 50
+        p.drawString(50, y, str(animal.number))
+        p.drawString(150, y, animal.name or "")
+        p.drawString(300, y, str(animal.birth_count))
+        y -= 20
+
+    p.save()
+    pdf = buffer.getvalue()
+    buffer.close()
+
+    response = HttpResponse(content_type="application/pdf")
+    response['Content-Disposition'] = 'attachment; filename="animals_birth_count.pdf"'
+    response.write(pdf)
+    return response

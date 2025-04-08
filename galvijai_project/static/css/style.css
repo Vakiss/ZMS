@@ -1,12 +1,15 @@
-html, body {
+body {
   margin: 0;
   padding: 0;
-  height: 100%;
-  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+
+  /* Fono paveikslėlis per visą ekraną */
+  background: url("{% static 'images/zeme.jpg' %}") no-repeat center center;
+  background-size: cover;
+  /* Kai scrolini, paveikslas lieka vietoje (pasirinktinai) */
+  background-attachment: fixed;
 }
-*, *:before, *:after {
-  box-sizing: inherit;
-}
+
 
 .top-bar {
   background-color: #4CAF50;
