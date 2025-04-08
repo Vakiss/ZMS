@@ -117,16 +117,18 @@ def ordered_passports(request):
     return render(request, 'main/ordered_passports.html', {'animals': ordered_animals})
 
 
-
-
-
-
-
-
-
 def isagai(request):
-    # Čia pateikite logiką, susijusią su "isagais"
-    return render(request, 'main/isagai.html')
+    eligible_animals = Animal.objects.filter(has_isagai=False) \
+        .exclude(events__event_type__in=['Gaišimas', 'Išvežimas']).distinct()
+    return render(request, 'main/isagai.html', {'animals': eligible_animals})
+
+@require_POST
+def order_isagai(request, animal_id):
+    animal = get_object_or_404(Animal, pk=animal_id)
+    if not animal.has_isagai and not animal.events.filter(event_type__in=['Gaišimas', 'Išvežimas']).exists():
+        animal.has_isagai = True
+        animal.save()
+    return redirect('isagai')
 
 def ataskaitos(request):
     # Čia pateikite logiką, susijusią su ataskaitomis

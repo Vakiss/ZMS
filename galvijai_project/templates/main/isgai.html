@@ -1,0 +1,35 @@
+{% extends 'main/base.html' %}
+{% block content %}
+<h2>Order Isagai for Eligible Animals</h2>
+<table border="1" cellspacing="0" cellpadding="5">
+  <thead>
+    <tr>
+      <th>Number</th>
+      <th>Name</th>
+      <th>Gender</th>
+      <th>Color</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for animal in animals %}
+      <tr>
+        <td>{{ animal.number }}</td>
+        <td>{{ animal.name }}</td>
+        <td>{{ animal.get_gender_display }}</td>
+        <td>{{ animal.get_color_display }}</td>
+        <td>
+          <form method="post" action="{% url 'order_isagai' animal.pk %}">
+            {% csrf_token %}
+            <button type="submit">Order Isagai</button>
+          </form>
+        </td>
+      </tr>
+    {% empty %}
+      <tr>
+        <td colspan="5">No eligible animals found.</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

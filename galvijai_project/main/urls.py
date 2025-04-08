@@ -16,5 +16,7 @@ urlpatterns = [
     path('order_passport/<int:animal_id>/', views.order_passport, name='order_passport'),
     path('ordered_passports/', views.ordered_passports, name='ordered_passports'),
     path('isagai/', views.isagai, name='isagai'),
+    path('isagai/', views.isagai, name='isagai'),
+    path('order_isagai/<int:animal_id>/', views.order_isagai, name='order_isagai'),
     path('ataskaitos/', views.ataskaitos, name='ataskaitos'),
 ]
