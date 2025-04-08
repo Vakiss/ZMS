@@ -1,7 +1,8 @@
 {% extends 'main/base.html' %}
 {% block content %}
-<h2>Order Passports for Eligible Animals</h2>
-<table border="1" cellspacing="0" cellpadding="5">
+<div class="mx-auto p-2" style="width: 400px;">
+<h2>Pasai</h2>
+<table border="2" cellspacing="0" cellpadding="20">
   <thead>
     <tr>
       <th>Number</th>
@@ -33,5 +34,5 @@
   </tbody>
 </table>
 <a href="{% url 'ordered_passports' %}" class="btn btn-info" style="margin-bottom: 10px;">Peržiūrėti užsakytus pasus</a>
-
+</div>
 {% endblock %}

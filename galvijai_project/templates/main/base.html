@@ -3,23 +3,25 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Galvijų informacinė sistema</title>
-  <!-- Jei norite, pridėkite Bootstrap ar kitus CSS failus -->
+  <title>ŽMS informacinė sistema</title>
+  <!-- Stilius -->
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <!-- Bootstrap (nebūtina, tik jei naudojate) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 
   <!-- Viršutinė juosta -->
   <header class="top-bar">
     <div class="logo">
-      <h1>ZMS informacinė sistema</h1>
+      <h1 style="margin:0;">ŽMS informacinė sistema</h1>
     </div>
     <div class="user-info">
       {% if user.is_authenticated %}
         <span>Sveiki, {{ user.username }}!</span>
         <form method="post" action="{% url 'logout' %}" style="display:inline;">
-        {% csrf_token %}
-        <button type="submit">Atsijungti</button>
+          {% csrf_token %}
+          <button type="submit">Atsijungti</button>
         </form>
       {% else %}
         <a href="{% url 'login' %}">Prisijungti</a> |
@@ -28,8 +30,8 @@
     </div>
   </header>
 
-  <div class="container">
-    <!-- Šoninis meniu -->
+  <!-- Čia pagrindinis flex konteineris: sidebar + content -->
+  <div class="content-container">
     <nav class="sidebar">
       <ul>
         <li><a href="{% url 'index' %}">Pradinis</a></li>
@@ -41,13 +43,13 @@
       </ul>
     </nav>
 
-    <!-- Pagrindinis turinys -->
-    <main class="content">
+    <main class="content-container">
       {% block content %}
       {% endblock %}
     </main>
   </div>
 
+  <!-- Bootstrap JS, jei naudojate -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

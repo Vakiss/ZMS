@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from .forms import AnimalForm,SpecialEventForm
 from django.utils import timezone
 from django.views.decorators.http import require_POST
-
+from django.db.models import Count, Q
 
 def index(request):
     return render(request, 'main/index.html')
@@ -137,19 +137,25 @@ def ordered_isagai(request):
 
 @login_required
 def ataskaitos(request):
-    # Gyvuliai pagal lytį
-    animals_by_gender = Animal.objects.filter(owner=request.user).order_by('gender')
-    # Gyvuliai pagal spalvą
-    animals_by_color = Animal.objects.filter(owner=request.user).order_by('color')
-    # Prieauglio atsivedimo įvykiai (pagal pasirinkimą)
-    birth_events = Event.objects.filter(
-        event_type='Prieauglio atsivedimas',
-        animal__owner=request.user
-    ).order_by('-date')
+    user = request.user
+    # 1) Gyvuliai pagal lytį – rodo tik number ir gender
+    animals_by_gender = Animal.objects.filter(owner=user).only('number', 'gender').order_by('gender')
+
+    # 2) Gyvuliai pagal spalvą – rodo tik number ir color
+    animals_by_color = Animal.objects.filter(owner=user).only('number', 'color').order_by('color')
+
+    # 3) Prieauglio atsivedimų skaičius kiekvienam gyvuliui
+    #    Pavyzdžiui, norime sužinoti, kiek "Prieauglio atsivedimo" eventų turi kiekvienas gyvulys
+    animals_with_birth_count = (Animal.objects
+        .filter(owner=user)
+        .annotate(birth_count=Count('events', filter=Q(events__event_type='Prieauglio atsivedimas')))
+        .order_by('-birth_count')
+    )
+    # Kiekvienas Animal objektas dabar turės papildomą lauką 'birth_count'
 
     context = {
         'animals_by_gender': animals_by_gender,
         'animals_by_color': animals_by_color,
-        'birth_events': birth_events,
+        'animals_with_birth_count': animals_with_birth_count,
     }
-    return render(request, 'main/ataskaitos_tabs.html', context)
+    return render(request, 'main/ataskaitos.html', context)

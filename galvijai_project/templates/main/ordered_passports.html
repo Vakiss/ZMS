@@ -1,5 +1,6 @@
 {% extends 'main/base.html' %}
 {% block content %}
+<div class="content-container">
 <h2>Užsakyti pasai</h2>
 {% if animals %}
   <table border="1" cellspacing="0" cellpadding="5">
@@ -25,4 +26,5 @@
 {% else %}
   <p>Nėra gyvulių, kuriems užsakyti pasai.</p>
 {% endif %}
+</div>
 {% endblock %}
