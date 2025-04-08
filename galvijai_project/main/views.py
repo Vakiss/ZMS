@@ -137,35 +137,19 @@ def ordered_isagai(request):
 
 @login_required
 def ataskaitos(request):
-    """
-    Pagal vartotojo pasirinktą variantą generuojame ataskaitą.
-    """
-    report_type = request.GET.get('report_type')  # Gaunam pasirinkimą per GET
-
-    animals = None
-    events = None
-
-    if report_type == 'by_gender':
-        # Pavyzdžiui, parodome gyvulius sugrupuotus ar surūšiuotus pagal lytį
-        # Čia galite filtruoti pagal prisijungusį vartotoją, jeigu reikia
-        animals = Animal.objects.filter(owner=request.user).order_by('gender')
-    elif report_type == 'by_color':
-        # Pavyzdžiui, parodome gyvulius surūšiuotus pagal spalvą
-        animals = Animal.objects.filter(owner=request.user).order_by('color')
-    elif report_type == 'birth_events':
-        # Parodome visus "Prieauglio atsivedimas" įvykius
-        events = Event.objects.filter(
-            event_type='Prieauglio atsivedimas',
-            animal__owner=request.user
-        ).order_by('-date')
-    else:
-        # Kai vartotojas dar nieko nepasirinko, 'report_type' gali būti None
-        # Galime rodyti tuščią lentelę ar pranešimą
-        pass
+    # Gyvuliai pagal lytį
+    animals_by_gender = Animal.objects.filter(owner=request.user).order_by('gender')
+    # Gyvuliai pagal spalvą
+    animals_by_color = Animal.objects.filter(owner=request.user).order_by('color')
+    # Prieauglio atsivedimo įvykiai (pagal pasirinkimą)
+    birth_events = Event.objects.filter(
+        event_type='Prieauglio atsivedimas',
+        animal__owner=request.user
+    ).order_by('-date')
 
     context = {
-        'report_type': report_type,
-        'animals': animals,
-        'events': events
+        'animals_by_gender': animals_by_gender,
+        'animals_by_color': animals_by_color,
+        'birth_events': birth_events,
     }
-    return render(request, 'main/ataskaitos.html', context)
+    return render(request, 'main/ataskaitos_tabs.html', context)

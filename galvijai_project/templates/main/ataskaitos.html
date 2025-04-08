@@ -1,0 +1,111 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block content %}
+<h2>Ataskaitos</h2>
+
+<!-- Bootstrap nav-tabs -->
+<ul class="nav nav-tabs" id="reportTabs" role="tablist">
+  <li class="nav-item" role="presentation">
+    <button class="nav-link active" id="byGender-tab" data-bs-toggle="tab" data-bs-target="#byGender" type="button" role="tab" aria-controls="byGender" aria-selected="true">
+      Pagal lytį
+    </button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="byColor-tab" data-bs-toggle="tab" data-bs-target="#byColor" type="button" role="tab" aria-controls="byColor" aria-selected="false">
+      Pagal spalvą
+    </button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="birthEvents-tab" data-bs-toggle="tab" data-bs-target="#birthEvents" type="button" role="tab" aria-controls="birthEvents" aria-selected="false">
+      Prieauglio atsivedimo įvykiai
+    </button>
+  </li>
+</ul>
+
+<div class="tab-content" id="reportTabsContent" style="margin-top: 20px;">
+  <!-- Tab 1: Pagal lytį -->
+  <div class="tab-pane fade show active" id="byGender" role="tabpanel" aria-labelledby="byGender-tab">
+    {% if animals_by_gender %}
+      <h3>Gyvuliai pagal lytį</h3>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Number</th>
+            <th>Name</th>
+            <th>Gender</th>
+            <th>Color</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for animal in animals_by_gender %}
+            <tr>
+              <td>{{ animal.number }}</td>
+              <td>{{ animal.name }}</td>
+              <td>{{ animal.get_gender_display }}</td>
+              <td>{{ animal.get_color_display }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p>Nėra duomenų pagal lytį.</p>
+    {% endif %}
+  </div>
+
+  <!-- Tab 2: Pagal spalvą -->
+  <div class="tab-pane fade" id="byColor" role="tabpanel" aria-labelledby="byColor-tab">
+    {% if animals_by_color %}
+      <h3>Gyvuliai pagal spalvą</h3>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Number</th>
+            <th>Name</th>
+            <th>Gender</th>
+            <th>Color</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for animal in animals_by_color %}
+            <tr>
+              <td>{{ animal.number }}</td>
+              <td>{{ animal.name }}</td>
+              <td>{{ animal.get_gender_display }}</td>
+              <td>{{ animal.get_color_display }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p>Nėra duomenų pagal spalvą.</p>
+    {% endif %}
+  </div>
+
+  <!-- Tab 3: Prieauglio atsivedimo įvykiai -->
+  <div class="tab-pane fade" id="birthEvents" role="tabpanel" aria-labelledby="birthEvents-tab">
+    {% if birth_events %}
+      <h3>Prieauglio atsivedimo įvykiai</h3>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Animal</th>
+            <th>Event Date</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for event in birth_events %}
+            <tr>
+              <td>{{ event.animal.name }} ({{ event.animal.number }})</td>
+              <td>{{ event.date }}</td>
+              <td>{{ event.notes }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p>Nėra prieauglio atsivedimo įvykių.</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
