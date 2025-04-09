@@ -38,17 +38,27 @@
   </header>
 
   <!-- Čia pagrindinis flex konteineris: sidebar + content -->
-  <div class="content-container">
-    <nav class="sidebar">
-      <ul>
-        <li><a href="{% url 'index' %}">Pradinis</a></li>
-        <li><a href="{% url 'animal_list' %}">Gyvulių sąrašas</a></li>
-        <li><a href="{% url 'new_animal' %}">Naujas gyvulys</a></li>
-        <li><a href="{% url 'passport' %}">Pasai</a></li>
-        <li><a href="{% url 'isagai' %}">Įsagai</a></li>
-        <li><a href="{% url 'ataskaitos' %}">Ataskaitos</a></li>
+  <div class="page-container">
+      <ul class="nav nav-tabs">
+      <li class="nav-item">
+      <a class="nav-link active" aria-current="page" href="{% url 'index' %}">Pradinis</a>
+      </li>
+      <li class="nav-item">
+      <a class="nav-link active" aria-current="page" href="{% url 'animal_list' %}">Gyvulių sąrašas</a>
+      </li>
+       <li class="nav-item">
+      <a class="nav-link active" aria-current="page" href="{% url 'new_animal' %}">Naujas gyvulys</a>
+      </li>
+        <li class="nav-item">
+      <a class="nav-link active" aria-current="page" href="{% url 'passport' %}">Pasai</a>
+      </li>
+        <li class="nav-item">
+      <a class="nav-link active" aria-current="page" href="{% url 'isagai' %}">Isagai</a>
+      </li>
+        <li class="nav-item">
+      <a class="nav-link active" aria-current="page" href="{% url 'ataskaitos' %}">Ataskaitos</a>
+      </li>
       </ul>
-    </nav>
 
     <main class="content-container">
       {% block content %}

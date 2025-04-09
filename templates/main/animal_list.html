@@ -3,7 +3,7 @@
 {% block content %}
 <div class="mx-auto p-2" style="width: 400px;">
 <h2>Gyvulių sąrašas</h2>
-<ul>
+<ul style="list-style-type:none; margin:0; padding:0;">
   {% for animal in animals %}
   <li>
     <a href="{% url 'animal_detail' animal.pk %}">

@@ -11,7 +11,7 @@
 
 <h3>Gyvulio įvykiai</h3>
 {% if events %}
-  <ul>
+  <ul style="list-style-type:none; margin:0; padding:0;">
     {% for event in events %}
       <li>
         <strong>{{ event.get_event_type_display }}</strong>
