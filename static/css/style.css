@@ -2,36 +2,42 @@ body {
   margin: 0;
   padding: 0;
   font-family: Arial, sans-serif;
-
-  /* Fono paveikslėlis per visą ekraną */
   background: url("{% static 'images/zeme.jpg' %}") no-repeat center center;
   background-size: cover;
-  /* Kai scrolini, paveikslas lieka vietoje (pasirinktinai) */
   background-attachment: fixed;
 }
 
-
+/* Viršutinė juosta */
 .top-bar {
-  background-color: #4CAF50;
-  color: white;
   display: flex;
   align-items: center;
   justify-content: space-between;
-
-  height: 60px;
-  padding: 0 10px; /
+  background-color: #4CAF50; /* ar kokią norite spalvą */
+  color: white;
+  padding: 10px;
   box-sizing: border-box;
 }
 
-
-
-.main-wrapper {
+/* Pagrindinė sritis (navigacija ir turinys) */
+.page-container {
   display: flex;
-  flex-direction: row;
-  height: calc(100% - 60px); /
+  flex-direction: column; /* Navigacija viršuje, content – apačioje */
 }
 
+/* Navigacijos juosta – tvarkoma Bootstrap klasių,
+   bet galite pritaikyti .nav { ... } ar pan. */
 
+/* Pagrindinio turinio konteineris */
+.content-container {
+  flex: 1;
+  padding: 20px;  /* užteks 20px, kad neatrodytų per didelis tarpas */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Jei šoninė juosta bus vėl naudojama */
 .sidebar {
   width: 200px;
   background-color: #f2f2f2;
@@ -39,31 +45,19 @@ body {
   box-sizing: border-box;
 }
 
-.content-container {
-  flex: 1; /* kad likusi vieta atitektų pagrindiniam turiniui */
-  padding: 20px; /* pvz. atitraukimas nuo kraštų */
-}
-
-.page-container {
-  display: flex;
-  /* Jei norite, kad sidebar ir pagrindinis turinys būtų išdėstyti vienoje eilėje */
-}
 .sidebar ul {
-    list-style-type: none; /* pašalina taškus */
-    padding-left: 0;       /* jeigu norite, kad tekstas prasidėtų kairėje be įtraukos */
-    margin: 0;            /* atsikratome papildomų tarpų išorėje */
+  list-style-type: none;
+  padding-left: 0;
+  margin: 0;
 }
 
-/* 2. Pašaliname pabraukimą iš nuorodų meniu */
 .sidebar ul li a {
-    text-decoration: none; /* pašalina nuorodų pabraukimą */
-    color: #000;           /* nustatykite pageidaujamą teksto spalvą (juodą, mėlyną ir t. t.) */
+  text-decoration: none;
+  color: #000;
 }
 
-/* 3. Jeigu norite, kad nuorodų stilius nesikeistų hover būsenoje */
 .sidebar ul li a:hover {
-    text-decoration: none;
-    /* gal galite pridėti kitokią fono spalvą ar kitą efektą, pvz.:
-       background-color: #ddd;
-       color: #333; */
+  text-decoration: none;
+  /* background-color: #ddd;
+     color: #333; */
 }

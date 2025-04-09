@@ -24,4 +24,5 @@ urlpatterns = [
     path('export/pdf/gender/', views.export_by_gender_pdf, name='export_by_gender_pdf'),
     path('export/pdf/color/', views.export_by_color_pdf, name='export_by_color_pdf'),
     path('export/pdf/birth/', views.export_birth_count_pdf, name='export_birth_count_pdf'),
+    path('help/', views.help_view, name='help'),
 ]

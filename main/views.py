@@ -322,3 +322,7 @@ def export_birth_count_pdf(request):
     response['Content-Disposition'] = 'attachment; filename="animals_birth_count.pdf"'
     response.write(pdf)
     return response
+
+
+def help_view(request):
+    return render(request, 'main/help.html')

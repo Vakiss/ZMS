@@ -6,23 +6,20 @@
   <title>ŽMS informacinė sistema</title>
   <!-- Stilius -->
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
-  <!-- Bootstrap (nebūtina, tik jei naudojate) -->
+  <!-- Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-
-
   <!-- Viršutinė juosta -->
   <header class="top-bar">
     <div class="logo">
       <h1 style="margin:0;">ŽMS informacinė sistema</h1>
     </div>
     <form class="d-flex me-3" method="get" action="{% url 'animal_search' %}">
-        <input class="form-control me-2" type="search" name="q"
-               placeholder="Ieškoti..." aria-label="Search">
-        <button class="btn btn-outline-light" type="submit">Ieškoti</button>
-      </form>
-
+      <input class="form-control me-2" type="search" name="q"
+             placeholder="Ieškoti..." aria-label="Search">
+      <button class="btn btn-outline-light" type="submit">Ieškoti</button>
+    </form>
     <div class="user-info">
       {% if user.is_authenticated %}
         <span>Sveiki, {{ user.username }}!</span>
@@ -37,36 +34,67 @@
     </div>
   </header>
 
-  <!-- Čia pagrindinis flex konteineris: sidebar + content -->
+  <!-- Pagrindinis konteineris su navigacija viršuje ir turiniu po juo -->
   <div class="page-container">
-      <ul class="nav nav-tabs">
+    <!-- Navigacija -->
+    <ul class="nav nav-tabs">
       <li class="nav-item">
-      <a class="nav-link active" aria-current="page" href="{% url 'index' %}">Pradinis</a>
-      </li>
-      <li class="nav-item">
-      <a class="nav-link active" aria-current="page" href="{% url 'animal_list' %}">Gyvulių sąrašas</a>
-      </li>
-       <li class="nav-item">
-      <a class="nav-link active" aria-current="page" href="{% url 'new_animal' %}">Naujas gyvulys</a>
-      </li>
-        <li class="nav-item">
-      <a class="nav-link active" aria-current="page" href="{% url 'passport' %}">Pasai</a>
-      </li>
-        <li class="nav-item">
-      <a class="nav-link active" aria-current="page" href="{% url 'isagai' %}">Isagai</a>
-      </li>
-        <li class="nav-item">
-      <a class="nav-link active" aria-current="page" href="{% url 'ataskaitos' %}">Ataskaitos</a>
-      </li>
-      </ul>
+  <a class="nav-link {% if request.resolver_match.url_name == 'index' %}active{% endif %}"
+     href="{% url 'index' %}">
+    Pradinis
+  </a>
+</li>
 
+<li class="nav-item">
+  <a class="nav-link {% if request.resolver_match.url_name == 'animal_list' %}active{% endif %}"
+     href="{% url 'animal_list' %}">
+    Gyvulių sąrašas
+  </a>
+</li>
+
+<li class="nav-item">
+  <a class="nav-link {% if request.resolver_match.url_name == 'new_animal' %}active{% endif %}"
+     href="{% url 'new_animal' %}">
+    Naujas gyvulys
+  </a>
+</li>
+
+<li class="nav-item">
+  <a class="nav-link {% if request.resolver_match.url_name == 'passport' %}active{% endif %}"
+     href="{% url 'passport' %}">
+    Pasai
+  </a>
+</li>
+
+<li class="nav-item">
+  <a class="nav-link {% if request.resolver_match.url_name == 'isagai' %}active{% endif %}"
+     href="{% url 'isagai' %}">
+    Isagai
+  </a>
+</li>
+
+<li class="nav-item">
+  <a class="nav-link {% if request.resolver_match.url_name == 'ataskaitos' %}active{% endif %}"
+     href="{% url 'ataskaitos' %}">
+    Ataskaitos
+  </a>
+</li>
+        <li class="nav-item ms-auto">
+  <a class="nav-link {% if request.resolver_match.url_name == 'help' %}active{% endif %}"
+     href="{% url 'help' %}">
+     Pagalba
+  </a>
+</li>
+    </ul>
+
+    <!-- Pagrindinis turinio blokas -->
     <main class="content-container">
       {% block content %}
       {% endblock %}
     </main>
   </div>
 
-  <!-- Bootstrap JS, jei naudojate -->
+  <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
