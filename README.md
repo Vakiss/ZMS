@@ -12,10 +12,12 @@
 
 Windows:
 `python -m venv venv`
+
 `venv\Scripts\activate`
 
 macOS/Linux:
 `python3 -m venv venv`
+
 `source venv/bin/activate`
 
 # Įdiekite reikalavimus:
@@ -23,6 +25,7 @@ macOS/Linux:
 
 # Atlikite duomenų bazės migracijas:
 `python manage.py makemigrations`
+
 `python manage.py migrate`
 
 # Sukurkite supervartotoją:
