@@ -18,4 +18,16 @@ macOS/Linux:
 `python3 -m venv venv`
 `source venv/bin/activate`
 
-# 
+# Įdiekite reikalavimus:
+`pip install -r requirements.txt`
+
+# Atlikite duomenų bazės migracijas:
+`python manage.py makemigrations`
+`python manage.py migrate`
+
+# Sukurkite supervartotoją:
+`python manage.py createsuperuser`
+
+# Paleiskite Django serverį:
+`python manage.py runserver`
+
