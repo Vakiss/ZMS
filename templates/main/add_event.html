@@ -1,53 +1,66 @@
 {% extends 'main/base.html' %}
 {% block content %}
-<h2>Naujas įvykis gyvuliui {{ animal.number }}</h2>
-<form method="post">
-  {% csrf_token %}
-  {% if form.non_field_errors %}
-    <div class="error">
-      {{ form.non_field_errors }}
-    </div>
-  {% endif %}
-
-  <div>
-    <label for="id_event_type">Event type:</label>
-    {{ form.event_type }}
-    {% if form.event_type.errors %}
-      <div class="error">{{ form.event_type.errors }}</div>
+<div class="container mt-4">
+  <h2>Naujas įvykis gyvuliui {{ animal.number }}</h2>
+  <form method="post">
+    {% csrf_token %}
+    {% if form.non_field_errors %}
+      <div class="alert alert-danger">
+        {{ form.non_field_errors }}
+      </div>
     {% endif %}
-  </div>
-  <div>
-    <label for="id_date">Event date:</label>
-    {{ form.date }}
-  </div>
-  <div>
-    <label for="id_notes">Notes:</label>
-    {{ form.notes }}
-  </div>
 
-  <!-- Čia prasideda palikuonio laukai -->
-  <div id="child_fields" style="display: none;">
-    <h3>Prieauglio duomenys</h3>
-    <div>
-      <label for="id_child_name">Child name:</label>
-      {{ form.child_name }}
+    <!-- Event type -->
+    <div class="mb-3">
+      <label for="{{ form.event_type.id_for_label }}" class="form-label">Event type:</label>
+      {{ form.event_type }}
+      {% if form.event_type.errors %}
+        <div class="text-danger">
+          {{ form.event_type.errors }}
+        </div>
+      {% endif %}
     </div>
-    <div>
-      <label for="id_child_number">Child number:</label>
-      {{ form.child_number }}
-    </div>
-    <div>
-      <label for="id_child_gender">Child gender:</label>
-      {{ form.child_gender }}
-    </div>
-    <div>
-      <label for="id_child_color">Child color:</label>
-      {{ form.child_color }}
-    </div>
-  </div>
 
-  <button type="submit">Patvirtinti</button>
-</form>
+    <!-- Event date -->
+    <div class="mb-3">
+      <label for="{{ form.date.id_for_label }}" class="form-label">Event date:</label>
+      {{ form.date }}
+    </div>
+
+    <!-- Notes -->
+    <div class="mb-3">
+      <label for="{{ form.notes.id_for_label }}" class="form-label">Notes:</label>
+      {{ form.notes }}
+    </div>
+
+    <!-- Palikuonio laukai -->
+    <div id="child_fields" style="display: none;">
+      <h3>Prieauglio duomenys</h3>
+      <div class="mb-3">
+        <label for="{{ form.child_name.id_for_label }}" class="form-label">Child name:</label>
+        {{ form.child_name }}
+      </div>
+      <div class="mb-3">
+        <label for="{{ form.child_number.id_for_label }}" class="form-label">Child number:</label>
+        {{ form.child_number }}
+      </div>
+      <div class="mb-3">
+        <label for="{{ form.child_gender.id_for_label }}" class="form-label">Child gender:</label>
+        {{ form.child_gender }}
+      </div>
+      <div class="mb-3">
+        <label for="{{ form.child_color.id_for_label }}" class="form-label">Child color:</label>
+        {{ form.child_color }}
+      </div>
+      <div class="mb-3">
+        <label for="{{ form.child_birth_date.id_for_label }}" class="form-label">Child birth date:</label>
+        {{ form.child_birth_date }}
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Patvirtinti</button>
+  </form>
+</div>
 
 <script>
   const eventTypeSelect = document.getElementById("id_event_type");

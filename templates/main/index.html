@@ -1,8 +1,12 @@
 {% extends 'main/base.html' %}
-
+{% load static %}
 {% block content %}
 <div class="mx-auto p-2" style="width: 700px;">
 <h2>Sveiki atvykę į Galvijų informacinę sistemą!</h2>
 <p>Čia galėsite valdyti gyvulių duomenis, ūkio informaciją ir pan.</p>
+    <img src="{% static 'images/cow1.jpg' %}"
+       alt="Galvijų sistemos paveikslėlis"
+       class="img-fluid mt-3"
+       style="max-width: 400px;">
 </div>
 {% endblock %}

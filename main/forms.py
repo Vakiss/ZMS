@@ -4,7 +4,7 @@ from .models import Animal, GENDER_CHOICES, COLOR_CHOICES, EVENT_TYPE_CHOICES
 class AnimalForm(forms.ModelForm):
     class Meta:
         model = Animal
-        fields = ['number', 'gender', 'color', 'name', 'weight']
+        fields = ['number', 'gender', 'color', 'name', 'weight', 'birth_date']
         labels = {
             'number': 'Number',
             'gender': 'Gender',
@@ -26,20 +26,41 @@ class AnimalForm(forms.ModelForm):
 
 
 class SpecialEventForm(forms.Form):
-    event_type = forms.ChoiceField(choices=EVENT_TYPE_CHOICES)
-    date = forms.DateField(required=False)
-    notes = forms.CharField(widget=forms.Textarea, required=False)
-
+    event_type = forms.ChoiceField(
+        choices=EVENT_TYPE_CHOICES,
+        widget=forms.Select(attrs={'class': 'form-select'})
+    )
+    date = forms.DateField(
+        required=False,
+        widget=forms.DateInput(attrs={'type': 'date', 'class': 'form-control'})
+    )
+    notes = forms.CharField(
+        widget=forms.Textarea(attrs={'class': 'form-control'}),
+        required=False
+    )
     # Laukai naujam gyvuliui
-    child_name = forms.CharField(required=False)
-    child_number = forms.CharField(required=False,max_length=14)
+    child_name = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )
+    child_number = forms.CharField(
+        required=False,
+        max_length=14,
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )
     child_gender = forms.ChoiceField(
         choices=GENDER_CHOICES,
-        required=False
+        required=False,
+        widget=forms.Select(attrs={'class': 'form-select'})
     )
     child_color = forms.ChoiceField(
         choices=COLOR_CHOICES,
-        required=False
+        required=False,
+        widget=forms.Select(attrs={'class': 'form-select'})
+    )
+    child_birth_date = forms.DateField(
+        required=False,
+        widget=forms.DateInput(attrs={'type': 'date', 'class': 'form-control'})
     )
 
     def clean(self):
@@ -47,8 +68,6 @@ class SpecialEventForm(forms.Form):
         event_type = cleaned_data.get('event_type')
         child_number = cleaned_data.get('child_number')
 
-        if event_type == 'prieauglio_atsivedimas':
-            # Tikriname, ar vartotojas užpildė privalomus duomenis
-            if not child_number:
-                self.add_error('child_number', 'Privaloma nurodyti naujo gyvulio numerį.')
+        if event_type == 'Prieauglio atsivedimas' and not child_number:
+            self.add_error('child_number', 'Privaloma nurodyti naujo gyvulio numerį.')
         return cleaned_data

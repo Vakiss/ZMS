@@ -12,6 +12,7 @@ from io import BytesIO
 from django.http import HttpResponse
 from reportlab.lib.pagesizes import letter, landscape
 
+
 def index(request):
     return render(request, 'main/index.html')
 
@@ -34,38 +35,57 @@ def animal_detail(request, pk):
 def add_event(request, animal_id):
     mother = get_object_or_404(Animal, pk=animal_id)
     if request.method == 'POST':
+
         form = SpecialEventForm(request.POST)
         if form.is_valid():
             event_type = form.cleaned_data['event_type']
-            if event_type == 'Prieauglio atsivedimas' and mother.gender.lower() != 'female':
-                form.add_error('event_type', 'Tik patelės gali turėti prieauglio atsivedimo įvykį.')
-                return render(request, 'main/add_event.html', {'form': form, 'animal': mother})
+            child_gender = form.cleaned_data.get('child_gender', '')
+
+
+
+            if event_type.strip().lower() == 'prieauglio atsivedimas':
+                has_error = False
+                # Patikriname motinos lytį
+                if not mother.gender or mother.gender.strip().lower() != 'female':
+                    form.add_error('event_type', 'Tik patelės (motinos) gali turėti prieauglio atsivedimo įvykį.')
+                    has_error = True
+
+                # Patikriname palikuonio lytį
+                if not child_gender or child_gender.strip().lower() != 'female':
+                    form.add_error('child_gender',
+                                   'Prieauglio atsivedimo įvykis turi būti registruojamas su palikuonio lytimi "female".')
+                    has_error = True
+
+                if has_error:
+                    # Debug spausdinimas klaidos šaltiniui
+                    print("DEBUG: Klaidos yra. Motinos gender: ", repr(mother.gender), " Child gender: ",
+                          repr(child_gender))
+                    return render(request, 'main/add_event.html', {'form': form, 'animal': mother})
+
+            # Toliau įvyksta įvykių kūrimas
             date = form.cleaned_data['date'] or timezone.now().date()
             notes = form.cleaned_data['notes']
 
-            # 1) Sukuriame patį Event
             new_event = Event.objects.create(
                 animal=mother,
                 event_type=event_type,
                 date=date,
                 notes=notes
             )
-
-            # 2) Jeigu tai prieauglio atsivedimas, sukuriame naują gyvulį (palikuonį)
-            if event_type == 'Prieauglio atsivedimas':
+            if event_type.strip().lower() == 'prieauglio atsivedimas':
                 child_name = form.cleaned_data['child_name']
                 child_number = form.cleaned_data['child_number']
                 child_color = form.cleaned_data['child_color']
-                child_gender = form.cleaned_data['child_gender']
+                child_birth_date = form.cleaned_data['child_birth_date']
                 Animal.objects.create(
                     name=child_name,
                     number=child_number,
                     mother=mother,
                     color=child_color,
-                    gender=child_gender,
+                    gender=child_gender,  # čia naudojame iš formos nurodytą palikuonio lytį
+                    birth_date=child_birth_date,
                     owner=mother.owner
                 )
-
             return redirect('animal_detail', pk=mother.pk)
     else:
         form = SpecialEventForm()
