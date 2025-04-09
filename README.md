@@ -1,4 +1,6 @@
 # Galvijų Informacinė Sistema
+![Sistema logo](images/cow.jpg)
+
 
 Ši sistema skirta valdyti gyvulių duomenis, įvykius, pasų užsakymus, ataskaitas ir kitus ūkio procesus.
 
