@@ -62,7 +62,7 @@ def add_event(request, animal_id):
                           repr(child_gender))
                     return render(request, 'main/add_event.html', {'form': form, 'animal': mother})
 
-            # Toliau įvyksta įvykių kūrimas
+
             date = form.cleaned_data['date'] or timezone.now().date()
             notes = form.cleaned_data['notes']
 
@@ -82,7 +82,7 @@ def add_event(request, animal_id):
                     number=child_number,
                     mother=mother,
                     color=child_color,
-                    gender=child_gender,  # čia naudojame iš formos nurodytą palikuonio lytį
+                    gender=child_gender,
                     birth_date=child_birth_date,
                     owner=mother.owner
                 )
@@ -128,14 +128,12 @@ def passport(request):
 @require_POST
 def order_passport(request, animal_id):
     animal = get_object_or_404(Animal, pk=animal_id)
-    # Patikriname, ar gyvulis yra eligible
     if not animal.has_passport and not animal.events.filter(event_type__in=['Gaišimas', 'Išvežimas']).exists():
         animal.has_passport = True
         animal.save()
     return redirect('passport')
 
 def ordered_passports(request):
-    # Atrenkame gyvulius, kurių has_passport yra True
     ordered_animals = Animal.objects.filter(has_passport=True)
     return render(request, 'main/ordered_passports.html', {'animals': ordered_animals})
 
