@@ -16,20 +16,20 @@ from reportlab.lib.pagesizes import letter, landscape
 def index(request):
     return render(request, 'main/index.html')
 
+
+
 @login_required
 def animal_list(request):
     animals = Animal.objects.filter(owner=request.user)
     return render(request, 'main/animal_list.html', {'animals': animals})
-
-
-
-
 
 @login_required
 def animal_detail(request, pk):
     animal = get_object_or_404(Animal, pk=pk, owner=request.user)
     events = animal.events.all().order_by('-date')
     return render(request, 'main/animal_detail.html', {'animal': animal, 'events': events})
+
+
 
 
 def add_event(request, animal_id):
@@ -120,8 +120,6 @@ def new_animal(request):
 
 
 
-
-
 def passport(request):
     eligible_animals = Animal.objects.filter(has_passport=False) \
         .exclude(events__event_type__in=['Gaišimas', 'Išvežimas']).distinct()
@@ -162,20 +160,16 @@ def ordered_isagai(request):
 
 def ataskaitos(request):
     user = request.user
-    # 1) Gyvuliai pagal lytį – rodo tik number ir gender, bet išskyrus, jei turi įvykį "Gaišimas" arba "Išvežimas"
     animals_by_gender = Animal.objects.filter(owner=user) \
         .exclude(events__event_type__in=['Gaišimas', 'Išvežimas']) \
         .only('number', 'gender') \
         .order_by('gender')
 
-    # 2) Gyvuliai pagal spalvą – rodo tik number ir color, išskyrus tuos, kurie turi įvykį "Gaišimas" arba "Išvežimas"
     animals_by_color = Animal.objects.filter(owner=user) \
         .exclude(events__event_type__in=['Gaišimas', 'Išvežimas']) \
         .only('number', 'color') \
         .order_by('color')
 
-    # 3) Prieauglio atsivedimų skaičius – skaičiuojame tik tiems gyvuliams,
-    # kurie neturi įvykio "Gaišimas" arba "Išvežimas"
     animals_with_birth_count = (Animal.objects
         .filter(owner=user)
         .exclude(events__event_type__in=['Gaišimas', 'Išvežimas'])
@@ -208,7 +202,6 @@ def export_by_gender_pdf(request):
     animals = Animal.objects.filter(owner=user).order_by('gender')
 
     buffer = BytesIO()
-    # Naudosime landscape (horizontalų) puslapį
     p = canvas.Canvas(buffer, pagesize=landscape(letter))
     width, height = landscape(letter)
 

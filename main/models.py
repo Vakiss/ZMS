@@ -29,6 +29,13 @@ GENDER_CHOICES = [
     ('male', 'Male'),
     ('female', 'Female'),
 ]
+
+EVENT_TYPE_CHOICES = [
+    ('Prieauglio atsivedimas', 'Prieauglio atsivedimas'),
+    ('Gaišimas', 'Gaišimas'),
+    ('Išvežimas', 'Išvežimas'),
+]
+
 class Animal(models.Model):
     number = models.CharField(max_length=14,null=True, blank=True,unique=True)
     gender = models.CharField(max_length=10,null=True, blank=True, choices=[('male', 'Male'), ('female', 'Female')])
@@ -60,11 +67,7 @@ class Animal(models.Model):
     def alert(self):
         return self.events.filter(event_type__in=['Gaišimas', 'Išvežimas']).exists()
 
-EVENT_TYPE_CHOICES = [
-    ('Prieauglio atsivedimas', 'Prieauglio atsivedimas'),
-    ('Gaišimas', 'Gaišimas'),
-    ('Išvežimas', 'Išvežimas'),
-]
+
 
 class Event(models.Model):
     animal = models.ForeignKey(Animal, on_delete=models.CASCADE, related_name='events')
