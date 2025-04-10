@@ -61,3 +61,10 @@ body {
   /* background-color: #ddd;
      color: #333; */
 }
+footer {
+  background-color: green;  /* arba #198754 (Bootstrap "success" atspalvis) */
+  color: white;
+  text-align: center;       /* Centruoja tekstą horizontalioje plokštumoje */
+  padding: 10px 0;         /* Vertikalus tarpas virš ir po tekstu */
+  /* Galite pridėti ir kitų stiliaus savybių, pvz. font-weight: bold; */
+}
